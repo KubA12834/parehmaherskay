@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AURUM — барбершоп</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2314110D'/%3E%3Crect x='2' y='2' width='60' height='60' rx='12' fill='none' stroke='%23B98D4C' stroke-width='2'/%3E%3Ctext x='32' y='43' font-family='Georgia, serif' font-size='32' fill='%23D9B672' text-anchor='middle'%3EA%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #14110D;
+    --bg-alt: #1B1611;
+    --bg-card: #201A14;
+    --gold: #B98D4C;
+    --gold-bright: #D9B672;
+    --cream: #ECE2D0;
+    --muted: #9C8E7A;
+    --line: #3A3025;
+    --serif: 'Cormorant Garamond', serif;
+    --sans: 'Jost', sans-serif;
+    --maxw: 1140px;
+  }
+
+  *{ box-sizing: border-box; }
+  html{ scroll-behavior: smooth; }
+  body{
+    margin:0;
+    background: var(--bg);
+    color: var(--cream);
+    font-family: var(--sans);
+    font-weight: 300;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  img{ max-width:100%; display:block; }
+  a{ color:inherit; }
+
+  .wrap{
+    max-width: var(--maxw);
+    margin: 0 auto;
+    padding: 0 32px;
+  }
+
+  ::selection{ background: var(--gold); color: var(--bg); }
+
+  a:focus-visible, button:focus-visible{
+    outline: 1px solid var(--gold-bright);
+    outline-offset: 3px;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ animation: none !important; transition: none !important; }
+  }
+
+  /* ---------- Header ---------- */
+  header{
+    position: sticky; top:0; z-index: 50;
+    background: rgba(20,17,13,0.86);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--line);
+  }
+  .nav{
+    display:flex; align-items:center; justify-content: space-between;
+    padding: 20px 32px;
+    max-width: var(--maxw); margin:0 auto;
+  }
+  .logo{
+    font-family: var(--serif);
+    font-size: 26px;
+    letter-spacing: 2px;
+    color: var(--cream);
+    text-decoration:none;
+  }
+  .logo em{ font-style: normal; color: var(--gold); }
+  .nav-links{ display:flex; gap: 36px; list-style:none; margin:0; padding:0; }
+  .nav-links a{
+    text-decoration:none; font-size: 14.5px; color: var(--muted);
+    position:relative; padding-bottom: 4px; transition: color .25s;
+  }
+  .nav-links a::after{
+    content:''; position:absolute; left:0; right:100%; bottom:0; height:1px;
+    background: var(--gold); transition: right .3s ease;
+  }
+  .nav-links a:hover{ color: var(--cream); }
+  .nav-links a:hover::after{ right:0; }
+  .nav-toggle{ display:none; }
+
+  /* ---------- Hero ---------- */
+  .hero{
+    position:relative;
+    padding: 108px 32px 96px;
+    overflow:hidden;
+  }
+  .hero-grid{
+    max-width: var(--maxw); margin: 0 auto;
+    display:grid; grid-template-columns: 1.15fr 0.85fr; gap: 48px; align-items:center;
+  }
+  .hero-eyebrow{
+    font-size: 14px; color: var(--gold); letter-spacing: .5px; margin: 0 0 18px;
+    opacity:0; animation: rise .8s .1s ease forwards;
+  }
+  .hero h1{
+    font-family: var(--serif); font-weight: 500;
+    font-size: clamp(42px, 6vw, 68px);
+    line-height: 1.05; margin: 0 0 26px; color: var(--cream);
+    opacity:0; animation: rise .8s .25s ease forwards;
+  }
+  .hero h1 i{ font-style: italic; color: var(--gold-bright); }
+  .hero p{
+    max-width: 46ch; color: var(--muted); font-size: 17px; margin: 0 0 34px;
+    opacity:0; animation: rise .8s .4s ease forwards;
+  }
+  .hero-cta{ display:flex; gap: 18px; flex-wrap:wrap; opacity:0; animation: rise .8s .55s ease forwards; }
+  .btn{
+    display:inline-block; padding: 15px 30px; font-family: var(--sans);
+    font-size: 14.5px; letter-spacing:.3px; text-decoration:none;
+    border: 1px solid var(--gold); color: var(--cream);
+    transition: background .25s, color .25s;
+  }
+  .btn.solid{ background: var(--gold); color: var(--bg); }
+  .btn.solid:hover{ background: var(--gold-bright); border-color: var(--gold-bright); }
+  .btn:not(.solid):hover{ background: rgba(185,141,76,0.12); }
+
+  @keyframes rise{
+    from{ opacity:0; transform: translateY(14px); }
+    to{ opacity:1; transform: translateY(0); }
+  }
+
+  .hero-art{ opacity:0; animation: rise 1s .3s ease forwards; }
+
+  /* ---------- Section shell ---------- */
+  section{ padding: 96px 0; }
+  .section-head{ margin-bottom: 56px; max-width: 640px; }
+  .section-head .kicker{ color: var(--gold); font-size: 14px; margin:0 0 10px; }
+  .section-head h2{
+    font-family: var(--serif); font-weight: 500; font-size: clamp(30px, 4vw, 42px);
+    margin:0 0 14px; color: var(--cream);
+  }
+  .section-head p{ color: var(--muted); margin:0; font-size: 16px; }
+
+  .divider{
+    width:100%; height:1px; background: var(--line); border:0; margin:0;
+  }
+
+  /* ---------- About ---------- */
+  .about-grid{ display:grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items:center; }
+  .about-points{ display:flex; flex-direction:column; gap: 24px; }
+  .about-point{ display:flex; gap:16px; align-items:flex-start; }
+  .about-point h4{ margin:0 0 4px; font-size:15px; color: var(--cream); font-weight:500; }
+  .about-point p{ margin:0; color: var(--muted); font-size:14px; }
+  @media (max-width: 860px){ .about-grid{ grid-template-columns: 1fr; } }
+
+  /* ---------- Services ---------- */
+  #services{ background: var(--bg-alt); }
+  .service-cols{ display:grid; grid-template-columns: 1fr 1fr; gap: 56px 64px; }
+  .service-cat h3{
+    font-family: var(--serif); font-weight: 500; font-size: 28px; color: var(--gold-bright);
+    margin: 0 0 26px; padding-bottom: 18px; border-bottom: 1px solid var(--line);
+    display:flex; align-items:center; gap: 14px;
+  }
+  .service-cat h3 svg{ flex-shrink:0; width:30px; height:30px; }
+  .service-cols.men{ grid-template-columns: repeat(3, 1fr); gap: 48px 56px; }
+  @media (max-width: 860px){ .service-cols.men{ grid-template-columns: 1fr; gap: 44px; } }
+  .unavailable{ opacity:.45; }
+  .unavailable .price{ color: var(--muted) !important; font-family: var(--sans) !important; font-size: 15px !important; }
+  .service-row{
+    display:flex; justify-content: space-between; align-items: baseline;
+    gap: 20px; padding: 18px 0; border-bottom: 1px dashed var(--line);
+  }
+  .service-row:last-child{ border-bottom:0; }
+  .service-row .name{ color: var(--cream); font-size: 18px; }
+  .service-row .desc{ display:block; color: var(--muted); font-size: 14px; margin-top: 4px; }
+  .service-row .price{ color: var(--gold-bright); font-size: 19px; white-space:nowrap; font-family: var(--serif); }
+  @media (max-width: 600px){
+    .service-row .name{ font-size: 17px; }
+    .service-row .price{ font-size: 18px; }
+    .service-row{ padding: 20px 0; }
+    .service-cat h3{ font-size: 25px; }
+  }
+
+  /* ---------- Reviews ---------- */
+  .reviews-grid{ display:grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
+  .review-card{
+    background: var(--bg-card); border: 1px solid var(--line);
+    padding: 34px 30px; display:flex; flex-direction:column; gap:20px;
+  }
+  .review-top{ display:flex; align-items:flex-start; justify-content:space-between; gap:12px; }
+  .review-mark{ font-family: var(--serif); font-size: 44px; color: var(--gold); line-height:1; }
+  .stars{ color: var(--gold-bright); font-size: 14px; letter-spacing: 2px; }
+  .review-text{ color: var(--cream); font-size: 15.5px; flex-grow:1; }
+  .review-name{ display:flex; align-items:center; gap: 12px; }
+  .review-avatar{
+    width: 38px; height:38px; border-radius:50%;
+    border: 1px solid var(--gold); display:flex; align-items:center; justify-content:center;
+    font-family: var(--serif); color: var(--gold-bright); font-size: 16px; flex-shrink:0;
+  }
+  .review-name .who b{ display:block; font-size: 14.5px; font-weight: 500; color: var(--cream); }
+  .review-name .who span{ display:block; font-size: 12.5px; color: var(--muted); }
+
+  .review-carousel{ max-width: 640px; margin: 0 auto; }
+  .review-carousel .review-card{ min-height: 190px; transition: opacity .35s ease, transform .35s ease; }
+  .review-carousel .review-card.fading{ opacity:0; transform: translateY(6px); }
+  .carousel-controls{ display:flex; align-items:center; gap:16px; margin-top: 24px; }
+  .carousel-controls button{
+    background:none; border: 1px solid var(--line); color: var(--cream);
+    width: 38px; height: 38px; border-radius:50%; font-size: 18px; cursor:pointer;
+    flex-shrink:0; transition: border-color .2s, color .2s;
+  }
+  .carousel-controls button:hover{ border-color: var(--gold); color: var(--gold-bright); }
+  .carousel-progress{ flex-grow:1; height:2px; background: var(--line); overflow:hidden; }
+  .carousel-progress-bar{ height:100%; width:0%; background: var(--gold); }
+  .carousel-progress-bar.animate{ animation: fillbar 5s linear forwards; }
+  @keyframes fillbar{ from{ width:0%; } to{ width:100%; } }
+
+  /* ---------- Contacts / Branches ---------- */
+  #contacts{ background: var(--bg-alt); }
+  .branches-grid{ display:grid; grid-template-columns: repeat(2, 1fr); gap: 28px; }
+  @media (max-width: 860px){ .branches-grid{ grid-template-columns: 1fr; } }
+  .branch-card{
+    border: 1px solid var(--line); background: var(--bg-card);
+    padding: 32px;
+  }
+  .branch-title{
+    font-family: var(--serif); font-weight:500; font-size: 22px; color: var(--gold-bright);
+    margin: 0 0 22px;
+  }
+  .contact-info{ display:flex; flex-direction:column; gap: 20px; }
+  .contact-item{ display:flex; gap: 16px; }
+  .contact-ico{
+    width: 40px; height:40px; flex-shrink:0; border: 1px solid var(--gold);
+    display:flex; align-items:center; justify-content:center;
+  }
+  .contact-item h4{ margin:0 0 4px; font-size: 14.5px; color: var(--cream); font-weight:500; }
+  .contact-item p{ margin:0; color: var(--muted); font-size: 14px; }
+  .contact-item a{ text-decoration:none; color: var(--muted); }
+  .contact-item a:hover{ color: var(--gold-bright); }
+
+  .branch-card .maplink{
+    display:inline-flex; align-items:center; gap:10px; text-decoration:none;
+    color: var(--gold-bright); font-size: 14.5px; margin-top: 26px;
+    border-top: 1px solid var(--line); padding-top: 20px; width:100%;
+  }
+
+  /* ---------- WhatsApp float button ---------- */
+  .wa-float{
+    position: fixed; right: 22px; bottom: 22px; z-index: 60;
+    width: 56px; height: 56px; border-radius:50%;
+    background: #25D366; display:flex; align-items:center; justify-content:center;
+    box-shadow: 0 6px 18px rgba(0,0,0,.4);
+    text-decoration:none; transition: transform .2s ease;
+  }
+  .wa-float:hover{ transform: scale(1.06); }
+  .wa-float svg{ width:28px; height:28px; }
+
+  footer{
+    border-top: 1px solid var(--line); padding: 34px 0;
+  }
+  .footer-inner{
+    display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap: 14px;
+  }
+  .footer-inner span{ color: var(--muted); font-size: 13px; }
+
+  /* ---------- Mobile ---------- */
+  @media (max-width: 860px){
+    .nav-links{
+      position:fixed; inset: 68px 0 0 0; background: var(--bg);
+      flex-direction:column; padding: 36px 32px; gap: 26px;
+      transform: translateY(-8px); opacity:0; pointer-events:none;
+      transition: opacity .25s, transform .25s;
+    }
+    .nav-links.open{ opacity:1; transform:translateY(0); pointer-events:auto; }
+    .nav-toggle{
+      display:block; background:none; border: 1px solid var(--line); color: var(--cream);
+      width: 40px; height: 40px; font-size: 18px; cursor:pointer;
+    }
+    .hero-grid{ grid-template-columns: 1fr; }
+    .hero-art{ order:-1; max-width: 260px; margin: 0 auto; }
+    .service-cols{ grid-template-columns: 1fr; }
+    .reviews-grid{ grid-template-columns: 1fr; }
+    section{ padding: 72px 0; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <nav class="nav">
+    <a href="#top" class="logo">A<em>U</em>RUM</a>
+    <button class="nav-toggle" id="navToggle" aria-label="Открыть меню" aria-expanded="false">☰</button>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#about">О нас</a></li>
+      <li><a href="#services">Услуги</a></li>
+      <li><a href="#reviews">Отзывы</a></li>
+      <li><a href="#contacts">Контакты</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main id="top">
+
+  <!-- ---------- HERO ---------- -->
+  <section class="hero">
+    <div class="hero-grid">
+      <div>
+        <p class="hero-eyebrow">Барбершоп для тех, кто ценит детали</p>
+        <h1>Стрижка и борода<br>— с <i>точностью</i><br>и характером</h1>
+        <p>AURUM — барбершоп, где стрижка и уход за бородой становятся ритуалом. Машинка, ножницы, горячее полотенце — без спешки и лишних слов.</p>
+        <div class="hero-cta">
+          <a href="#contacts" class="btn solid">Записаться</a>
+          <a href="#services" class="btn">Смотреть услуги</a>
+        </div>
+      </div>
+      <div class="hero-art" aria-hidden="true">
+        <svg viewBox="0 0 340 400" width="100%" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="170" cy="185" r="152" fill="none" stroke="#3A3025" stroke-width="1"/>
+          <circle cx="170" cy="185" r="138" fill="none" stroke="#3A3025" stroke-width="0.6"/>
+
+          <!-- crossed scissors -->
+          <g stroke-linecap="round">
+            <path d="M118 68 L216 292" stroke="#B98D4C" stroke-width="2" fill="none"/>
+            <path d="M222 68 L124 292" stroke="#D9B672" stroke-width="2" fill="none"/>
+            <ellipse cx="118" cy="68" rx="16" ry="7" fill="none" stroke="#B98D4C" stroke-width="1.6" transform="rotate(-25 118 68)"/>
+            <ellipse cx="222" cy="68" rx="16" ry="7" fill="none" stroke="#D9B672" stroke-width="1.6" transform="rotate(25 222 68)"/>
+            <circle cx="170" cy="180" r="5.5" fill="#14110D" stroke="#D9B672" stroke-width="1.6"/>
+            <circle cx="216" cy="292" r="19" fill="none" stroke="#B98D4C" stroke-width="1.6"/>
+            <circle cx="124" cy="292" r="19" fill="none" stroke="#D9B672" stroke-width="1.6"/>
+          </g>
+
+          <!-- comb -->
+          <g transform="translate(228,318)" stroke="#6b5c47" stroke-width="1" fill="none" stroke-linecap="round">
+            <rect x="0" y="0" width="66" height="9" rx="2"/>
+            <line x1="7" y1="9" x2="7" y2="27"/>
+            <line x1="15" y1="9" x2="15" y2="27"/>
+            <line x1="23" y1="9" x2="23" y2="27"/>
+            <line x1="31" y1="9" x2="31" y2="27"/>
+            <line x1="39" y1="9" x2="39" y2="27"/>
+            <line x1="47" y1="9" x2="47" y2="27"/>
+            <line x1="55" y1="9" x2="55" y2="27"/>
+          </g>
+
+          <!-- straight razor -->
+          <g transform="translate(34,330)" stroke="#6b5c47" stroke-width="1" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M0 22 L46 4"/>
+            <path d="M4 30 L50 12"/>
+            <path d="M0 22 L4 30"/>
+            <path d="M46 4 L50 12"/>
+            <rect x="44" y="0" width="26" height="10" rx="4" transform="rotate(23 44 0)"/>
+          </g>
+
+          <path d="M50 210 Q170 178 290 210" stroke="#3A3025" stroke-width="0.8" fill="none"/>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ---------- ABOUT ---------- -->
+  <section id="about">
+    <div class="wrap">
+      <div class="about-grid">
+        <div class="section-head" style="margin-bottom:0;">
+          <p class="kicker">О нас</p>
+          <h2>Барбершоп, где важны детали</h2>
+          <p>Работаем без спешки и лишних разговоров: чёткая форма, аккуратная линия бороды и фиксированные цены без сюрпризов на кассе. Каждый мастер отвечает за результат — от первой стрижки до постоянного клиента.</p>
+        </div>
+        <div class="about-points">
+          <div class="about-point">
+            <div class="contact-ico" aria-hidden="true">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#D9B672" stroke-width="1.5"><path d="M20 6 9 17l-5-5"/></svg>
+            </div>
+            <div><h4>Фиксированные цены</h4><p>Без наценок и «зависит от мастера»</p></div>
+          </div>
+          <div class="about-point">
+            <div class="contact-ico" aria-hidden="true">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#D9B672" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+            </div>
+            <div><h4>Без спешки</h4><p>Каждому клиенту — своё время</p></div>
+          </div>
+          <div class="about-point">
+            <div class="contact-ico" aria-hidden="true">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#D9B672" stroke-width="1.5"><path d="M20 4 8.5 12 20 20"/><path d="M8.5 12 4 12"/></svg>
+            </div>
+            <div><h4>Внимание к деталям</h4><p>Чёткая линия, ровный контур</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ---------- SERVICES ---------- -->
+  <section id="services">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="kicker">Услуги и цены</p>
+        <h2>Прайс-лист барбершопа</h2>
+        <p>Фиксированные цены без сюрпризов на кассе.</p>
+      </div>
+
+      <div class="service-cols men">
+        <div class="service-cat">
+          <h3>
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#D9B672" stroke-width="1.4"><path d="M6 9a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z"/><path d="M6 15a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z" opacity="0"/><path d="M20 4 8.5 12 20 20"/><path d="M8.5 12 4 12"/></svg>
+            Мужские стрижки
+          </h3>
+          <div class="service-row">
+            <div><span class="name">Любая мужская стрижка</span></div>
+            <div class="price">500 ₽</div>
+          </div>
+          <div class="service-row">
+            <div><span class="name">Оформление бороды</span></div>
+            <div class="price">500 ₽</div>
+          </div>
+          <div class="service-row unavailable">
+            <div><span class="name">Оконтовка бороды</span></div>
+            <div class="price">нет в наличии</div>
+          </div>
+          <div class="service-row">
+            <div><span class="name">Стрижка налысо</span></div>
+            <div class="price">200 ₽</div>
+          </div>
+        </div>
+
+        <div class="service-cat">
+          <h3>
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#D9B672" stroke-width="1.4"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8"/></svg>
+            Детские стрижки
+          </h3>
+          <div class="service-row">
+            <div><span class="name">Любая детская стрижка</span><span class="desc">До 12 лет</span></div>
+            <div class="price">500 ₽</div>
+          </div>
+        </div>
+
+        <div class="service-cat">
+          <h3>
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#D9B672" stroke-width="1.4"><path d="M4 12c1.5-4 4-6 8-6s6.5 2 8 6c-1.5 4-4 6-8 6s-6.5-2-8-6Z"/><circle cx="12" cy="12" r="2"/></svg>
+            Дополнительные услуги
+          </h3>
+          <div class="service-row">
+            <div><span class="name">Мытьё головы</span></div>
+            <div class="price">150 ₽</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ---------- REVIEWS ---------- -->
+  <section id="reviews">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="kicker">Отзывы клиентов</p>
+        <h2>Нам доверяют образ</h2>
+        <p>Несколько слов от тех, кто уже был у наших мастеров.</p>
+      </div>
+
+      <div class="review-carousel">
+        <div class="review-card" id="reviewCard">
+          <div class="review-top">
+            <div class="review-mark">"</div>
+            <div class="stars" id="reviewStars">★★★★★</div>
+          </div>
+          <p class="review-text" id="reviewText"></p>
+          <div class="review-name">
+            <div class="review-avatar" id="reviewAvatar"></div>
+            <div class="who"><b id="reviewName"></b><span id="reviewService"></span></div>
+          </div>
+        </div>
+        <div class="carousel-controls">
+          <button type="button" id="prevReview" aria-label="Предыдущий отзыв">‹</button>
+          <div class="carousel-progress"><div class="carousel-progress-bar" id="progressBar"></div></div>
+          <button type="button" id="nextReview" aria-label="Следующий отзыв">›</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ---------- CONTACTS ---------- -->
+  <section id="contacts">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="kicker">Контакты</p>
+        <h2>Ждём вас в барбершопе</h2>
+        <p>Запишитесь по телефону, в мессенджере или загляните без записи — если у мастера есть окно.</p>
+      </div>
+
+      <!-- Чтобы добавить новый филиал — скопируйте блок .branch-card целиком и замените адрес/телефон/ссылку -->
+      <div class="branches-grid">
+        <div class="branch-card">
+          <h3 class="branch-title">Парголово</h3>
+          <div class="contact-info">
+            <div class="contact-item">
+              <div class="contact-ico" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#D9B672" stroke-width="1.5"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11Z"/><circle cx="12" cy="10" r="2.5"/></svg>
+              </div>
+              <div><h4>Адрес</h4><p>Санкт-Петербург, посёлок Парголово, Приозерское шоссе, 16, корп. 1</p></div>
+            </div>
+            <div class="contact-item">
+              <div class="contact-ico" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#D9B672" stroke-width="1.5"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3-8.7A2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.3 1.8.6 2.7a2 2 0 0 1-.5 2.1L8 9.9a16 16 0 0 0 6 6l1.4-1.2a2 2 0 0 1 2.1-.5c.9.3 1.8.5 2.7.6a2 2 0 0 1 1.8 2.1Z"/></svg>
+              </div>
+              <div><h4>Телефон</h4><p><a href="tel:+79522695544">+7 (952) 269-55-44</a></p></div>
+            </div>
+            <div class="contact-item">
+              <div class="contact-ico" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#D9B672" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+              </div>
+              <div><h4>Часы работы</h4><p>Ежедневно, 10:00–21:00</p></div>
+            </div>
+          </div>
+          <a class="maplink" href="https://yandex.ru/maps/?text=Санкт-Петербург%2C+посёлок+Парголово%2C+Приозерское+шоссе%2C+16%2C+корп.+1" target="_blank" rel="noopener">
+            Как добраться →
+          </a>
+        </div>
+      </div>
+
+      <div class="contact-item" style="margin-top:44px;">
+        <div class="contact-ico" aria-hidden="true">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#D9B672" stroke-width="1.5"><path d="M4 4h16v16H4z"/><path d="M4 4l8 8 8-8"/></svg>
+        </div>
+        <div><h4>Почта</h4><p><a href="mailto:hello@aurumsalon.ru">hello@aurumsalon.ru</a></p></div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<a class="wa-float" href="https://wa.me/79522695544" target="_blank" rel="noopener" aria-label="Написать в WhatsApp">
+  <svg viewBox="0 0 32 32" fill="#fff" xmlns="http://www.w3.org/2000/svg"><path d="M16.02 3C9.4 3 4 8.36 4 14.94c0 2.28.64 4.42 1.75 6.24L4 29l8.02-1.7a13.1 13.1 0 0 0 4 .62c6.63 0 12.02-5.36 12.02-11.98C28.04 8.36 22.65 3 16.02 3Zm0 21.7c-1.86 0-3.6-.5-5.1-1.38l-.37-.22-4.4.94.93-4.28-.24-.4a9.63 9.63 0 0 1-1.5-5.42c0-5.35 4.36-9.7 9.7-9.7 5.33 0 9.68 4.35 9.68 9.7 0 5.36-4.35 9.76-9.7 9.76Zm5.34-7.28c-.29-.15-1.72-.85-1.98-.95-.27-.1-.46-.15-.66.14-.2.3-.76.95-.93 1.14-.17.2-.34.22-.63.08-.29-.15-1.22-.45-2.33-1.44-.86-.77-1.44-1.72-1.6-2.01-.17-.3-.02-.46.13-.6.13-.13.29-.34.44-.51.15-.17.2-.3.29-.49.1-.2.05-.37-.02-.51-.08-.15-.66-1.6-.9-2.19-.24-.57-.48-.5-.66-.5h-.56c-.2 0-.51.07-.78.37-.27.3-1.02 1-1.02 2.44s1.05 2.82 1.2 3.02c.15.2 2.07 3.17 5.03 4.44.7.3 1.25.48 1.68.61.7.22 1.34.19 1.84.12.56-.08 1.72-.7 1.96-1.38.24-.68.24-1.26.17-1.38-.07-.12-.26-.2-.55-.34Z"/></svg>
+</a>
+
+<footer>
+  <div class="wrap footer-inner">
+    <span>© 2026 AURUM. Все права защищены.</span>
+    <span>Санкт-Петербург, Приозерское шоссе, 16, корп. 1 · +7 (952) 269-55-44</span>
+  </div>
+</footer>
+
+<script>
+  const toggle = document.getElementById('navToggle');
+  const links = document.getElementById('navLinks');
+  toggle.addEventListener('click', () => {
+    const open = links.classList.toggle('open');
+    toggle.setAttribute('aria-expanded', open);
+  });
+  links.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+    links.classList.remove('open');
+    toggle.setAttribute('aria-expanded', 'false');
+  }));
+</script>
+
+<script>
+  const reviewNames = ["Игорь М.","Сергей А.","Павел Р.","Артём В.","Никита Л.","Евгений Т.","Михаил К.","Денис П.","Владислав С.","Тимур Г.","Максим Н.","Роман Д.","Олег Ж.","Григорий Б.","Виктор Ф.","Кирилл Ю.","Ярослав Х.","Богдан Ц.","Матвей Ч.","Захар Ш.","Глеб Щ.","Родион Э.","Эдуард Я.","Станислав И.","Леонид О.","Вадим У.","Руслан Е.","Марк Й.","Демьян З.","Ефим К.","Тарас Л.","Юрий М.","Валентин А.","Клим Б.","Аркадий В.","Тимофей Г.","Фёдор Д.","Семён Е.","Андрей Ж.","Илья З.","Даниил И.","Александр К.","Николай Л.","Пётр М.","Василий Н.","Степан О.","Антон П.","Георгий Р.","Ян С.","Лев Т.","Марат У.","Рустам Ф.","Азат Х.","Эрик Ч.","Богдан Ш.","Илья Э."];
+  const reviewServices = ["мужская стрижка","борода","стрижка налысо","детская стрижка","стрижка и борода","мытьё головы"];
+  const reviewTexts = [
+    "Быстро подстригли, без очереди — заглянул в обед, успел вернуться на работу вовремя.",
+    "Мастер сразу понял, что нужно, не пришлось долго объяснять.",
+    "Оформили бороду ровно, симметрично, доволен результатом.",
+    "Привёл сына первый раз — отнеслись спокойно, ребёнок не боялся.",
+    "Стрижка налысо за 10 минут, чисто и аккуратно.",
+    "Хожу сюда уже полгода, всегда одинаково хороший результат.",
+    "Цены честные, никаких доплат на кассе.",
+    "Атмосфера расслабленная, никто не торопит.",
+    "Горячее полотенце после бороды — приятный бонус.",
+    "Мастер аккуратно работает с машинкой, не дёргает.",
+    "Заходил без записи, приняли почти сразу.",
+    "Форму держит долго, не приходится часто подравнивать.",
+    "Вежливый персонал, приятно находиться в помещении.",
+    "Ровный контур бороды, симметрия — на высоте.",
+    "Ребёнку понравилось, теперь просит только сюда.",
+    "Приятно удивлён скоростью и качеством за эти деньги.",
+    "Мастер посоветовал форму, которая подошла лучше, чем то, что я просил.",
+    "Чисто, светло, приятная музыка — расслабляешься сразу.",
+    "Стрижку сделали именно так, как показывал на фото.",
+    "Хожу к одному мастеру — стабильно доволен.",
+    "Быстро, недорого, без лишних разговоров — то, что нужно.",
+    "Оценил внимание к деталям в районе висков и затылка.",
+    "Записался по телефону, приняли точно в назначенное время.",
+    "Борода стала выглядеть гораздо аккуратнее после первого визита.",
+    "Приходил уже трижды — каждый раз одинаково хорошо.",
+    "Понравилось, что не навязывают дополнительные услуги.",
+    "Мытьё головы после стрижки — приятное завершение визита.",
+    "Мастер работает быстро, но не в ущерб качеству.",
+    "Привёл друга — тоже остался доволен.",
+    "Хорошее соотношение цены и качества.",
+    "Стрижка держится долго, не нужно часто обновлять.",
+    "Приятно, что мастер спрашивает про длину, а не делает на глаз.",
+    "Заглянул случайно, теперь хожу постоянно.",
+    "Атмосфера мужская, спокойная, без суеты.",
+    "Оформление бороды — отдельно советую, линия ровная.",
+    "Стрижка налысо — быстро и без раздражения кожи.",
+    "Детская стрижка прошла спокойно, сын не капризничал.",
+    "Заходил перед важной встречей — успели быстро и качественно.",
+    "Мастер точно знает, как работать с жёсткими волосами.",
+    "Понравилось, что цены указаны заранее, без сюрпризов.",
+    "Хожу сюда с открытия — качество не падает.",
+    "Стрижка получилась именно такой, как хотел.",
+    "Приятный персонал, всегда поздороваются и предложат чай.",
+    "Быстро сориентировали по форме бороды под тип лица.",
+    "Заходил без записи в будний день — не пришлось ждать.",
+    "Мастер аккуратно подровнял контур, не задев кожу.",
+    "Отличное место для регулярных визитов — стабильный результат.",
+    "Понравилась чистота в зале и порядок на рабочем месте мастера.",
+    "Сделали стрижку ровно за 20 минут — уложился в обеденный перерыв.",
+    "Хорошо подошли к первому визиту сына — объяснили, что будут делать.",
+    "Мастер посоветовал более короткую стрижку — оказалось то, что нужно.",
+    "Отдельное спасибо за аккуратную работу с усами.",
+    "Пришёл без чёткого пожелания — мастер предложил и не прогадал.",
+    "Хожу сюда весь год, ни разу не разочаровался.",
+    "Соотношение скорости и качества — одно из лучших, что встречал."
+  ];
+
+  const reviews = reviewTexts.map((t, i) => ({
+    text: t,
+    name: reviewNames[i % reviewNames.length],
+    service: reviewServices[i % reviewServices.length],
+    stars: (i % 6 === 0) ? 4 : 5
+  }));
+
+  let currentReview = 0;
+  let autoTimer = null;
+  const reviewCard = document.getElementById('reviewCard');
+  const reviewTextEl = document.getElementById('reviewText');
+  const reviewNameEl = document.getElementById('reviewName');
+  const reviewServiceEl = document.getElementById('reviewService');
+  const reviewStarsEl = document.getElementById('reviewStars');
+  const reviewAvatarEl = document.getElementById('reviewAvatar');
+  const progressBar = document.getElementById('progressBar');
+
+  function renderReview(i){
+    const r = reviews[i];
+    reviewTextEl.textContent = r.text;
+    reviewNameEl.textContent = r.name;
+    reviewServiceEl.textContent = r.service;
+    reviewStarsEl.textContent = '★★★★★☆☆☆☆☆'.slice(5 - r.stars, 10 - r.stars);
+    reviewAvatarEl.textContent = r.name.charAt(0);
+  }
+
+  function showReview(i, restart){
+    reviewCard.classList.add('fading');
+    setTimeout(() => {
+      currentReview = (i + reviews.length) % reviews.length;
+      renderReview(currentReview);
+      reviewCard.classList.remove('fading');
+    }, 200);
+    if (restart) restartTimer();
+  }
+
+  function restartTimer(){
+    progressBar.classList.remove('animate');
+    void progressBar.offsetWidth;
+    progressBar.classList.add('animate');
+    if (autoTimer) clearInterval(autoTimer);
+    autoTimer = setInterval(() => showReview(currentReview + 1, false), 5000);
+  }
+
+  document.getElementById('nextReview').addEventListener('click', () => showReview(currentReview + 1, true));
+  document.getElementById('prevReview').addEventListener('click', () => showReview(currentReview - 1, true));
+
+  renderReview(0);
+  restartTimer();
+</script>
+
+</body>
+</html>
