@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AURUM — барбершоп</title>
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2314110D'/%3E%3Crect x='2' y='2' width='60' height='60' rx='12' fill='none' stroke='%23B98D4C' stroke-width='2'/%3E%3Ctext x='32' y='43' font-family='Georgia, serif' font-size='32' fill='%23D9B672' text-anchor='middle'%3EA%3C/text%3E%3C/svg%3E">
+<title>Мужская парикмахерская</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2314110D'/%3E%3Crect x='2' y='2' width='60' height='60' rx='12' fill='none' stroke='%23B98D4C' stroke-width='2'/%3E%3Ctext x='32' y='43' font-family='Georgia, serif' font-size='30' fill='%23D9B672' text-anchor='middle'%3EM%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -52,14 +52,20 @@
 
   @media (prefers-reduced-motion: reduce){
     *{ animation: none !important; transition: none !important; }
+    .hero-eyebrow, .hero h1, .hero p, .hero-cta, .hero-art{ opacity:1 !important; transform:none !important; }
   }
 
   /* ---------- Header ---------- */
   header{
     position: sticky; top:0; z-index: 50;
+    background: transparent;
+    border-bottom: 1px solid var(--line);
+  }
+  header::before{
+    content:'';
+    position:absolute; inset:0; z-index:-1;
     background: rgba(20,17,13,0.86);
     backdrop-filter: blur(8px);
-    border-bottom: 1px solid var(--line);
   }
   .nav{
     display:flex; align-items:center; justify-content: space-between;
@@ -68,10 +74,11 @@
   }
   .logo{
     font-family: var(--serif);
-    font-size: 26px;
-    letter-spacing: 2px;
+    font-size: 21px;
+    letter-spacing: 0.5px;
     color: var(--cream);
     text-decoration:none;
+    white-space: nowrap;
   }
   .logo em{ font-style: normal; color: var(--gold); }
   .nav-links{ display:flex; gap: 36px; list-style:none; margin:0; padding:0; }
@@ -261,6 +268,8 @@
     display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap: 14px;
   }
   .footer-inner span{ color: var(--muted); font-size: 13px; }
+  .footer-inner a{ color: var(--muted); text-decoration: underline; text-underline-offset: 3px; }
+  .footer-inner a:hover{ color: var(--gold-bright); }
 
   /* ---------- Mobile ---------- */
   @media (max-width: 860px){
@@ -276,6 +285,7 @@
       width: 40px; height: 40px; font-size: 18px; cursor:pointer;
     }
     .hero-grid{ grid-template-columns: 1fr; }
+    .logo{ font-size: 17px; }
     .hero-art{ order:-1; max-width: 260px; margin: 0 auto; }
     .service-cols{ grid-template-columns: 1fr; }
     .reviews-grid{ grid-template-columns: 1fr; }
@@ -287,7 +297,7 @@
 
 <header>
   <nav class="nav">
-    <a href="#top" class="logo">A<em>U</em>RUM</a>
+    <a href="#top" class="logo">Мужская <em>парикмахерская</em></a>
     <button class="nav-toggle" id="navToggle" aria-label="Открыть меню" aria-expanded="false">☰</button>
     <ul class="nav-links" id="navLinks">
       <li><a href="#about">О нас</a></li>
@@ -306,7 +316,7 @@
       <div>
         <p class="hero-eyebrow">Барбершоп для тех, кто ценит детали</p>
         <h1>Стрижка и борода<br>— с <i>точностью</i><br>и характером</h1>
-        <p>AURUM — барбершоп, где стрижка и уход за бородой становятся ритуалом. Машинка, ножницы, горячее полотенце — без спешки и лишних слов.</p>
+        <p>Мужская парикмахерская — место, где стрижка и уход за бородой становятся ритуалом. Машинка, ножницы, горячее полотенце — без спешки и лишних слов.</p>
         <div class="hero-cta">
           <a href="#contacts" class="btn solid">Записаться</a>
           <a href="#services" class="btn">Смотреть услуги</a>
@@ -502,7 +512,7 @@
               <div class="contact-ico" aria-hidden="true">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#D9B672" stroke-width="1.5"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11Z"/><circle cx="12" cy="10" r="2.5"/></svg>
               </div>
-              <div><h4>Адрес</h4><p>Санкт-Петербург, посёлок Парголово, Приозерское шоссе, 16, корп. 1</p></div>
+              <div><h4>Адрес</h4><p><a href="https://yandex.ru/maps/?text=Санкт-Петербург%2C+посёлок+Парголово%2C+Приозерское+шоссе%2C+16%2C+корп.+1" target="_blank" rel="noopener">Санкт-Петербург, посёлок Парголово, Приозерское шоссе, 16, корп. 1</a></p></div>
             </div>
             <div class="contact-item">
               <div class="contact-ico" aria-hidden="true">
@@ -527,7 +537,7 @@
         <div class="contact-ico" aria-hidden="true">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#D9B672" stroke-width="1.5"><path d="M4 4h16v16H4z"/><path d="M4 4l8 8 8-8"/></svg>
         </div>
-        <div><h4>Почта</h4><p><a href="mailto:hello@aurumsalon.ru">hello@aurumsalon.ru</a></p></div>
+        <div><h4>Почта</h4><p><a href="mailto:hello@muzhskaya-parikmaherskaya.ru">hello@muzhskaya-parikmaherskaya.ru</a></p></div>
       </div>
     </div>
   </section>
@@ -540,8 +550,8 @@
 
 <footer>
   <div class="wrap footer-inner">
-    <span>© 2026 AURUM. Все права защищены.</span>
-    <span>Санкт-Петербург, Приозерское шоссе, 16, корп. 1 · +7 (952) 269-55-44</span>
+    <span>© 2026 Мужская парикмахерская. Все права защищены.</span>
+    <span><a href="https://yandex.ru/maps/?text=Санкт-Петербург%2C+посёлок+Парголово%2C+Приозерское+шоссе%2C+16%2C+корп.+1" target="_blank" rel="noopener">Санкт-Петербург, Приозерское шоссе, 16, корп. 1</a> · +7 (952) 269-55-44</span>
   </div>
 </footer>
 
@@ -556,6 +566,13 @@
     links.classList.remove('open');
     toggle.setAttribute('aria-expanded', 'false');
   }));
+
+  // Failsafe: guarantee hero content is visible even if the entrance
+  // animation never fires (e.g. reduced-motion edge cases).
+  setTimeout(() => {
+    document.querySelectorAll('.hero-eyebrow, .hero h1, .hero p, .hero-cta, .hero-art')
+      .forEach(el => { el.style.opacity = '1'; el.style.transform = 'none'; });
+  }, 1200);
 </script>
 
 <script>
